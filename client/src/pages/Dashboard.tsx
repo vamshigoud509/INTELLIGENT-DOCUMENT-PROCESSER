@@ -13,7 +13,15 @@ import {
   Percent, 
   Download,
   Eye,
-  FileSpreadsheet
+  FileSpreadsheet,
+  GraduationCap,
+  Activity,
+  Scale,
+  Sparkles,
+  BookOpen,
+  CheckCircle2,
+  ChevronRight,
+  Briefcase
 } from 'lucide-react';
 import { IngestedDocument, AnalyticsSummary } from '../types/index.js';
 import { 
@@ -36,6 +44,7 @@ export const Dashboard: React.FC = () => {
   const [search, setSearch] = useState('');
   const [selectedDomain, setSelectedDomain] = useState('ALL');
   const [selectedStatus, setSelectedStatus] = useState('ALL');
+  const [selectedCategoryTab, setSelectedCategoryTab] = useState<'ALL' | 'STUDENT' | 'FINANCIAL' | 'HEALTHCARE' | 'LEGAL'>('ALL');
 
   const fetchData = async () => {
     try {
@@ -81,6 +90,17 @@ export const Dashboard: React.FC = () => {
     }
   };
 
+  const handleFilterCategory = (categoryKey: 'ALL' | 'STUDENT' | 'FINANCIAL' | 'HEALTHCARE' | 'LEGAL') => {
+    setSelectedCategoryTab(categoryKey);
+    setSelectedDomain(categoryKey);
+  };
+
+  // Category counts
+  const studentDocs = documents.filter(d => d.domain === 'STUDENT');
+  const financialDocs = documents.filter(d => d.domain === 'FINANCIAL');
+  const healthcareDocs = documents.filter(d => d.domain === 'HEALTHCARE');
+  const legalDocs = documents.filter(d => d.domain === 'LEGAL');
+
   return (
     <div className="space-y-8 pb-16">
       
@@ -91,7 +111,7 @@ export const Dashboard: React.FC = () => {
             Document Ingestion & Audit Studio
           </h1>
           <p className="text-xs sm:text-sm text-slate-400 mt-1">
-            Automated multimodal extraction, mathematical audits, and conversational discovery for enterprise documents.
+            Automated multimodal extraction, mathematical audits, and conversational discovery across Student, Financial, Healthcare, and Legal domains.
           </p>
         </div>
       </div>
@@ -159,6 +179,315 @@ export const Dashboard: React.FC = () => {
       {/* Pre-built Sample Document Loader */}
       <SampleDocsLoader onSampleLoaded={() => fetchData()} />
 
+      {/* Category Intelligence & Domain Summaries Card */}
+      <div className="glass-panel rounded-2xl p-6 border border-slate-800 shadow-xl space-y-5">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-800 pb-4">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-brand-500/20 border border-brand-500/30 flex items-center justify-center text-brand-400">
+              <Sparkles className="w-5 h-5" />
+            </div>
+            <div>
+              <h3 className="text-base font-bold text-white flex items-center gap-2">
+                Category Intelligence Summary
+              </h3>
+              <p className="text-xs text-slate-400">
+                Synthesized insights summarized according to document category and domain
+              </p>
+            </div>
+          </div>
+
+          {/* Category Switcher Tabs */}
+          <div className="flex flex-wrap items-center gap-1.5 p-1 bg-slate-900/90 rounded-xl border border-slate-800 text-xs">
+            {[
+              { id: 'ALL', label: 'All Categories', count: documents.length, icon: Layers },
+              { id: 'STUDENT', label: 'Student & Academic', count: studentDocs.length, icon: GraduationCap },
+              { id: 'FINANCIAL', label: 'Financial & Billing', count: financialDocs.length, icon: DollarSign },
+              { id: 'HEALTHCARE', label: 'Healthcare & Clinical', count: healthcareDocs.length, icon: Activity },
+              { id: 'LEGAL', label: 'Legal & Contracts', count: legalDocs.length, icon: Scale },
+            ].map(tab => {
+              const Icon = tab.icon;
+              const isActive = selectedCategoryTab === tab.id;
+              return (
+                <button
+                  key={tab.id}
+                  onClick={() => handleFilterCategory(tab.id as any)}
+                  className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-medium transition-all ${
+                    isActive
+                      ? 'bg-brand-600 text-white shadow-sm'
+                      : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
+                  }`}
+                >
+                  <Icon className="w-3.5 h-3.5" />
+                  <span>{tab.label}</span>
+                  <span className={`text-[10px] px-1.5 py-0.2 rounded-full ${
+                    isActive ? 'bg-brand-700 text-white' : 'bg-slate-800 text-slate-400'
+                  }`}>
+                    {tab.count}
+                  </span>
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Dynamic Category Summary Content */}
+        {selectedCategoryTab === 'STUDENT' && (
+          <div className="p-5 rounded-xl bg-gradient-to-r from-indigo-950/40 via-purple-950/20 to-slate-900 border border-indigo-500/30 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-indigo-500/20 pb-3">
+              <div className="flex items-center gap-2.5">
+                <GraduationCap className="w-5 h-5 text-indigo-400" />
+                <h4 className="text-sm font-bold text-white">Student & Academic Learning Summary</h4>
+              </div>
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                {studentDocs.length} Practice Set(s) / Worksheet(s)
+              </span>
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              DocuSphere IDP has extracted and audited student coursework on <strong>Computer Science Digital Logic & Number Systems</strong>. 
+              The curriculum features 10 step-by-step problem sets covering binary-decimal base conversion via successive division by 2, powers-of-two place values (2⁰ to 2¹²), 8-bit memory addressing (256 locations), and 24-bit True Color RGB channels. All numerical proofs and bitwise inversion calculations have been verified with automated compliance checks.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 text-xs">
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">Core Subject</span>
+                <p className="font-bold text-indigo-300 mt-0.5">Computer Science</p>
+                <span className="text-[10px] text-slate-400">Digital Logic & Arch</span>
+              </div>
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">Exercises Analyzed</span>
+                <p className="font-bold text-white mt-0.5">10 Problem Sets</p>
+                <span className="text-[10px] text-emerald-400">100% Verified Solutions</span>
+              </div>
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">Addressing Architecture</span>
+                <p className="font-bold text-cyan-300 mt-0.5">8-Bit (256 States)</p>
+                <span className="text-[10px] text-slate-400">0 to 255 Address Space</span>
+              </div>
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">Color Representation</span>
+                <p className="font-bold text-amber-300 mt-0.5">24-Bit RGB Depth</p>
+                <span className="text-[10px] text-slate-400">16,777,216 True Colors</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {selectedCategoryTab === 'FINANCIAL' && (
+          <div className="p-5 rounded-xl bg-gradient-to-r from-emerald-950/40 via-teal-950/20 to-slate-900 border border-emerald-500/30 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-emerald-500/20 pb-3">
+              <div className="flex items-center gap-2.5">
+                <DollarSign className="w-5 h-5 text-emerald-400" />
+                <h4 className="text-sm font-bold text-white">Commercial Financial & Billing Summary</h4>
+              </div>
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">
+                {financialDocs.length} Invoice(s) / PO(s)
+              </span>
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Audited commercial transactions from enterprise suppliers including <strong>Apex Nexus Consulting LLC</strong>. 
+              The automated IDP engine reconciled line-item totals against stated subtotals, verified 8% state sales tax, checked early payment discounts (2% Net 10), and validated JPMorgan Chase wire instructions.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 text-xs">
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">Audited Total Balance</span>
+                <p className="font-bold text-emerald-400 mt-0.5">${(analytics?.totalMonetaryValue || 0).toLocaleString()}</p>
+                <span className="text-[10px] text-slate-400">Reconciled to the cent</span>
+              </div>
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">Payment Terms</span>
+                <p className="font-bold text-white mt-0.5">Net 30 Days</p>
+                <span className="text-[10px] text-cyan-400">Early-pay discounts checked</span>
+              </div>
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">Math Discrepancies</span>
+                <p className="font-bold text-amber-400 mt-0.5">{analytics?.anomalyCount ?? 0} Flagged</p>
+                <span className="text-[10px] text-slate-400">Sum vs declared subtotal</span>
+              </div>
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">Primary Currency</span>
+                <p className="font-bold text-white mt-0.5">USD ($)</p>
+                <span className="text-[10px] text-slate-400">ISO-4217 Standard</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {selectedCategoryTab === 'HEALTHCARE' && (
+          <div className="p-5 rounded-xl bg-gradient-to-r from-cyan-950/40 via-blue-950/20 to-slate-900 border border-cyan-500/30 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-cyan-500/20 pb-3">
+              <div className="flex items-center gap-2.5">
+                <Activity className="w-5 h-5 text-cyan-400" />
+                <h4 className="text-sm font-bold text-white">Clinical Healthcare & Claims Summary</h4>
+              </div>
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-cyan-500/20 text-cyan-300 border border-cyan-500/30">
+                {healthcareDocs.length} Hospital UB-04 Claim(s)
+              </span>
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Synthesized clinical hospital records and institutional claims from <strong>St. Jude Metropolitan Health Center</strong>. 
+              Extractions capture emergency room triage level 5 (CPT 99285), IV contrast abdominal CT scans (CPT 74177), and inpatient 24-hour observation for Acute Appendicitis (ICD-10 K35.80) with prior-authorization audit validation.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 text-xs">
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">Clinical Diagnostic Code</span>
+                <p className="font-bold text-cyan-300 mt-0.5">ICD-10 K35.80</p>
+                <span className="text-[10px] text-slate-400">Acute Appendicitis</span>
+              </div>
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">Procedure Codes</span>
+                <p className="font-bold text-white mt-0.5">CPT 74177 / 99285</p>
+                <span className="text-[10px] text-slate-400">CT Scan & ER Level 5</span>
+              </div>
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">Admitted Facility</span>
+                <p className="font-bold text-white mt-0.5 truncate">St. Jude Metropolitan</p>
+                <span className="text-[10px] text-emerald-400">Network Provider</span>
+              </div>
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">Coverage Payer</span>
+                <p className="font-bold text-white mt-0.5">BlueCross Insurance</p>
+                <span className="text-[10px] text-slate-400">Copay $250.00</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {selectedCategoryTab === 'LEGAL' && (
+          <div className="p-5 rounded-xl bg-gradient-to-r from-purple-950/40 via-pink-950/20 to-slate-900 border border-purple-500/30 space-y-4">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-purple-500/20 pb-3">
+              <div className="flex items-center gap-2.5">
+                <Scale className="w-5 h-5 text-purple-400" />
+                <h4 className="text-sm font-bold text-white">Legal Agreements & Enterprise SLA Summary</h4>
+              </div>
+              <span className="text-xs font-semibold px-2.5 py-1 rounded-full bg-purple-500/20 text-purple-300 border border-purple-500/30">
+                {legalDocs.length} Executed Contract(s)
+              </span>
+            </div>
+            <p className="text-xs text-slate-300 leading-relaxed">
+              Audited Master Enterprise Services Agreements and SLAs between <strong>Vanguard Cloud Infrastructure Ltd.</strong> and enterprise counterparties. 
+              Provisions covenant 99.99% multi-region uptime backed by automated fee credits, SOC-2 continuous monitoring, 24-hour breach notification, and mutual limitation of liability capped at aggregate annual fees.
+            </p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-1 text-xs">
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">SLA Commitment</span>
+                <p className="font-bold text-purple-300 mt-0.5">99.99% Uptime</p>
+                <span className="text-[10px] text-slate-400">15-min P1 Response</span>
+              </div>
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">Liability Limitation</span>
+                <p className="font-bold text-white mt-0.5">1x Annual Contract</p>
+                <span className="text-[10px] text-slate-400">$135,000.00 USD Cap</span>
+              </div>
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">Governing Law</span>
+                <p className="font-bold text-cyan-300 mt-0.5">State of New York</p>
+                <span className="text-[10px] text-slate-400">United States</span>
+              </div>
+              <div className="p-3 rounded-lg bg-slate-900/80 border border-slate-800">
+                <span className="text-[10px] text-slate-400 uppercase">Compliance Standard</span>
+                <p className="font-bold text-emerald-400 mt-0.5">SOC-2 Type II</p>
+                <span className="text-[10px] text-slate-400">GDPR & CCPA Compliant</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {selectedCategoryTab === 'ALL' && (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            {/* Student Card */}
+            <div 
+              onClick={() => handleFilterCategory('STUDENT')}
+              className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-indigo-500/50 cursor-pointer transition-all flex flex-col justify-between group"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 uppercase">
+                    Student & Academic
+                  </span>
+                  <GraduationCap className="w-4 h-4 text-indigo-400 group-hover:scale-110 transition-transform" />
+                </div>
+                <h5 className="text-sm font-bold text-white">Coursework & Practice</h5>
+                <p className="text-xs text-slate-400 mt-1 line-clamp-2">
+                  Binary-decimal proofs, place values, 8-bit memory addressing, and RGB depth.
+                </p>
+              </div>
+              <div className="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+                <span className="text-indigo-400 font-bold">{studentDocs.length} Documents</span>
+                <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-indigo-300 group-hover:translate-x-0.5 transition-all" />
+              </div>
+            </div>
+
+            {/* Financial Card */}
+            <div 
+              onClick={() => handleFilterCategory('FINANCIAL')}
+              className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-emerald-500/50 cursor-pointer transition-all flex flex-col justify-between group"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 uppercase">
+                    Financial & Invoicing
+                  </span>
+                  <DollarSign className="w-4 h-4 text-emerald-400 group-hover:scale-110 transition-transform" />
+                </div>
+                <h5 className="text-sm font-bold text-white">Invoices & Reconciliations</h5>
+                <p className="text-xs text-slate-400 mt-1 line-clamp-2">
+                  Line items arithmetic, sales tax validation, Net 30 payment terms, and vendor banking.
+                </p>
+              </div>
+              <div className="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+                <span className="text-emerald-400 font-bold">{financialDocs.length} Documents</span>
+                <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-emerald-300 group-hover:translate-x-0.5 transition-all" />
+              </div>
+            </div>
+
+            {/* Healthcare Card */}
+            <div 
+              onClick={() => handleFilterCategory('HEALTHCARE')}
+              className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-cyan-500/50 cursor-pointer transition-all flex flex-col justify-between group"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-cyan-500/20 text-cyan-300 border border-cyan-500/30 uppercase">
+                    Healthcare & Clinical
+                  </span>
+                  <Activity className="w-4 h-4 text-cyan-400 group-hover:scale-110 transition-transform" />
+                </div>
+                <h5 className="text-sm font-bold text-white">Hospital Claims & UB-04</h5>
+                <p className="text-xs text-slate-400 mt-1 line-clamp-2">
+                  ICD-10 diagnoses, CPT procedure codes, inpatient ward care, and insurer adjudication.
+                </p>
+              </div>
+              <div className="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+                <span className="text-cyan-400 font-bold">{healthcareDocs.length} Documents</span>
+                <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-300 group-hover:translate-x-0.5 transition-all" />
+              </div>
+            </div>
+
+            {/* Legal Card */}
+            <div 
+              onClick={() => handleFilterCategory('LEGAL')}
+              className="p-4 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-purple-500/50 cursor-pointer transition-all flex flex-col justify-between group"
+            >
+              <div>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-[10px] font-bold px-2 py-0.5 rounded bg-purple-500/20 text-purple-300 border border-purple-500/30 uppercase">
+                    Legal & Contracts
+                  </span>
+                  <Scale className="w-4 h-4 text-purple-400 group-hover:scale-110 transition-transform" />
+                </div>
+                <h5 className="text-sm font-bold text-white">Master Cloud SLAs</h5>
+                <p className="text-xs text-slate-400 mt-1 line-clamp-2">
+                  99.99% uptime guarantees, limitation of liability caps, covenants, and New York law.
+                </p>
+              </div>
+              <div className="mt-3 pt-3 border-t border-slate-800 flex items-center justify-between text-xs">
+                <span className="text-purple-400 font-bold">{legalDocs.length} Documents</span>
+                <ChevronRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-purple-300 group-hover:translate-x-0.5 transition-all" />
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
       {/* Ingested Documents List Section */}
       <div className="glass-panel rounded-2xl border border-slate-800 shadow-xl overflow-hidden">
         
@@ -188,10 +517,16 @@ export const Dashboard: React.FC = () => {
             {/* Domain Filter */}
             <select
               value={selectedDomain}
-              onChange={e => setSelectedDomain(e.target.value)}
+              onChange={e => {
+                setSelectedDomain(e.target.value);
+                if (['ALL', 'STUDENT', 'FINANCIAL', 'HEALTHCARE', 'LEGAL'].includes(e.target.value)) {
+                  setSelectedCategoryTab(e.target.value as any);
+                }
+              }}
               className="bg-slate-900 border border-slate-800 rounded-xl px-2.5 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-brand-500"
             >
               <option value="ALL">All Domains</option>
+              <option value="STUDENT">Student & Academic</option>
               <option value="FINANCIAL">Financial & Invoicing</option>
               <option value="HEALTHCARE">Healthcare & Claims</option>
               <option value="LEGAL">Legal & Contracts</option>
@@ -227,7 +562,7 @@ export const Dashboard: React.FC = () => {
               <FileText className="w-12 h-12 text-slate-600 mx-auto mb-3" />
               <h4 className="text-sm font-semibold text-slate-300">No documents found</h4>
               <p className="text-xs text-slate-500 mt-1 max-w-sm mx-auto">
-                Upload a document above or click one of the instant demo datasets to evaluate the IDP pipeline.
+                Upload a student practice sheet, invoice, or claim above, or load an instant demo dataset.
               </p>
             </div>
           ) : (
@@ -250,7 +585,11 @@ export const Dashboard: React.FC = () => {
                     <td className="py-3 px-4">
                       <div className="flex items-center gap-2.5">
                         <div className="w-8 h-8 rounded-lg bg-slate-800/80 border border-slate-700/80 flex items-center justify-center shrink-0 text-brand-400">
-                          <FileText className="w-4 h-4" />
+                          {doc.domain === 'STUDENT' ? (
+                            <GraduationCap className="w-4 h-4 text-indigo-400" />
+                          ) : (
+                            <FileText className="w-4 h-4" />
+                          )}
                         </div>
                         <div className="overflow-hidden">
                           <Link

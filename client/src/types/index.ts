@@ -1,4 +1,4 @@
-export type DocumentDomain = 'FINANCIAL' | 'HEALTHCARE' | 'LEGAL' | 'GENERAL';
+export type DocumentDomain = 'FINANCIAL' | 'HEALTHCARE' | 'LEGAL' | 'STUDENT' | 'GENERAL';
 
 export type DocumentCategory = 
   | 'INVOICE' 
@@ -14,6 +14,13 @@ export type DocumentCategory =
   | 'PRESCRIPTION' 
   | 'LAB_REPORT'
   | 'SLA' 
+  | 'STUDENT_WORKSHEET'
+  | 'STUDENT_ASSIGNMENT'
+  | 'STUDENT_TRANSCRIPT'
+  | 'STUDENT_ID'
+  | 'ACADEMIC_REPORT'
+  | 'STUDENT_EXAM'
+  | 'SYLLABUS'
   | 'OTHER';
 
 export type ProcessingStatus = 'PENDING' | 'PROCESSING' | 'COMPLETED' | 'FAILED';
@@ -147,6 +154,29 @@ export interface DomainSpecificData {
   date_of_birth?: string;
   expiry_date?: string;
   issuing_country_or_authority?: string;
+
+  // Student & Academic / Education
+  student_name?: string;
+  student_id?: string;
+  institution_name?: string;
+  course_or_subject?: string;
+  grade_level?: string;
+  assignment_title?: string;
+  academic_term?: string;
+  submission_date?: string;
+  score_or_grade?: string;
+  total_marks?: number;
+  instructor_name?: string;
+  key_concepts?: string[];
+  study_recommendations?: string[];
+  questions_count?: number;
+  problem_sets?: {
+    number?: number | string;
+    question: string;
+    topic?: string;
+    answer?: string;
+    marks?: number;
+  }[];
 }
 
 export interface DocumentExtraction {

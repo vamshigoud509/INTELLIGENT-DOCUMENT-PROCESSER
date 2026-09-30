@@ -14,7 +14,8 @@ import {
   Activity, 
   FileText, 
   ShieldAlert,
-  Info
+  Info,
+  GraduationCap
 } from 'lucide-react';
 
 export const StatusBadge: React.FC<{ status: ProcessingStatus }> = ({ status }) => {
@@ -52,6 +53,13 @@ export const StatusBadge: React.FC<{ status: ProcessingStatus }> = ({ status }) 
 
 export const DomainBadge: React.FC<{ domain: DocumentDomain }> = ({ domain }) => {
   switch (domain) {
+    case 'STUDENT':
+      return (
+        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-indigo-950/70 text-indigo-300 border border-indigo-500/40">
+          <GraduationCap className="w-3.5 h-3.5 text-indigo-400" />
+          Student & Academic
+        </span>
+      );
     case 'FINANCIAL':
       return (
         <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-md text-xs font-semibold bg-emerald-950/60 text-emerald-300 border border-emerald-500/30">

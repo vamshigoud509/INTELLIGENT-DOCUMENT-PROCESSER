@@ -73,13 +73,13 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ onUploadSuccess }) => {
             Ingest & Audit Documents
           </h2>
           <p className="text-xs text-slate-400">
-            Upload commercial invoices, hospital discharge summaries, or contracts for zero-shot entity extraction & audit checks.
+            Upload student worksheets, academic practice sets, commercial invoices, hospital claims, or legal contracts for zero-shot entity extraction & audit checks.
           </p>
         </div>
 
         {/* Domain Target Selector */}
-        <div className="flex items-center gap-1.5 p-1 bg-slate-900/90 rounded-xl border border-slate-800 text-xs">
-          {(['AUTO', 'FINANCIAL', 'HEALTHCARE', 'LEGAL'] as const).map(dom => (
+        <div className="flex flex-wrap items-center gap-1.5 p-1 bg-slate-900/90 rounded-xl border border-slate-800 text-xs">
+          {(['AUTO', 'STUDENT', 'FINANCIAL', 'HEALTHCARE', 'LEGAL'] as const).map(dom => (
             <button
               key={dom}
               type="button"
@@ -90,7 +90,7 @@ export const UploadZone: React.FC<UploadZoneProps> = ({ onUploadSuccess }) => {
                   : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/60'
               }`}
             >
-              {dom === 'AUTO' ? 'Auto-Detect' : dom.charAt(0) + dom.slice(1).toLowerCase()}
+              {dom === 'AUTO' ? 'Auto-Detect' : dom === 'STUDENT' ? 'Student & Academic' : dom.charAt(0) + dom.slice(1).toLowerCase()}
             </button>
           ))}
         </div>

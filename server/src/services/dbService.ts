@@ -314,6 +314,7 @@ class DatabaseService {
       FINANCIAL: 0,
       HEALTHCARE: 0,
       LEGAL: 0,
+      STUDENT: 0,
       GENERAL: 0
     };
     for (const d of docs) {

@@ -2,9 +2,222 @@ import { v4 as uuidv4 } from 'uuid';
 import { dbService } from './dbService.js';
 import { IngestedDocument, DocumentExtraction, DocumentAnomaly } from '../types/index.js';
 
-export const loadSampleDocument = async (type: 'invoice' | 'medical_claim' | 'contract', userId?: string) => {
+export const loadSampleDocument = async (type: 'invoice' | 'medical_claim' | 'contract' | 'student_worksheet', userId?: string) => {
   const docId = uuidv4();
   const now = new Date().toISOString();
+
+  if (type === 'student_worksheet') {
+    const document: IngestedDocument = {
+      id: docId,
+      user_id: userId,
+      filename: 'sample_student_practice_set.pdf',
+      original_name: 'Binary_Decimal_Practice_Set.pdf',
+      mime_type: 'application/pdf',
+      file_size: 18779,
+      file_url: '/uploads/sample_student_practice_set.pdf',
+      domain: 'STUDENT',
+      category: 'STUDENT_WORKSHEET',
+      status: 'COMPLETED',
+      confidence_score: 99.4,
+      processing_time_ms: 1250,
+      created_at: now,
+      updated_at: now
+    };
+
+    const extraction: DocumentExtraction = {
+      id: uuidv4(),
+      document_id: docId,
+      parties: {
+        sender: {
+          name: 'Department of Computer Science & Engineering',
+          address: 'Digital Systems & Architecture Academy',
+          tax_id: 'EDU-CS-99482',
+          phone: '+1 (800) 555-0142',
+          email: 'faculty@cs-academy.edu'
+        },
+        recipient: {
+          name: 'Computer Systems Student',
+          address: 'Undergraduate Program, Section A'
+        }
+      },
+      metadata_fields: {
+        document_number: 'SET-BIN-DEC-2026',
+        issue_date: '2026-07-07',
+        due_date: '2026-07-21',
+        currency: 'PTS',
+        purchase_order_number: 'CRS-CS101-FALL',
+        payment_status: 'ACADEMIC_EVALUATION',
+        language: 'English'
+      },
+      financials: {
+        currency: 'PTS',
+        total_amount: 100,
+        subtotal: 100,
+        tax_amount: 0,
+        discount_amount: 0
+      },
+      line_items: [
+        {
+          description: 'Problem 1: Decimal 4096 Place Values & Successive Division-by-2 to Binary',
+          quantity: 1,
+          unit_price: 10,
+          tax_rate: 0,
+          total_price: 10,
+          category: 'Number Systems'
+        },
+        {
+          description: 'Problem 2: 8-Bit Memory Address Space (256 locations) & 200th Location Binary',
+          quantity: 1,
+          unit_price: 10,
+          tax_rate: 0,
+          total_price: 10,
+          category: 'Memory Addressing'
+        },
+        {
+          description: 'Problem 3: RGB 24-Bit Color Channels (R=200, G=130, B=75) & 16.7M Distinct Colors',
+          quantity: 1,
+          unit_price: 10,
+          tax_rate: 0,
+          total_price: 10,
+          category: 'Digital Representation'
+        },
+        {
+          description: 'Problem 4: Bitwise Inversion of A=10100100 & Proof A + ~A = 255 (One\'s Complement)',
+          quantity: 1,
+          unit_price: 10,
+          tax_rate: 0,
+          total_price: 10,
+          category: 'Binary Logic'
+        },
+        {
+          description: 'Problem 5: Mystery 8-Bit Number with Left/Right Sum Constraints (N = 203)',
+          quantity: 1,
+          unit_price: 10,
+          tax_rate: 0,
+          total_price: 10,
+          category: 'Constraint Satisfaction'
+        },
+        {
+          description: 'Problem 6: Binary Score Arithmetic & Difference (A=443, B=358 -> Diff=85)',
+          quantity: 1,
+          unit_price: 10,
+          tax_rate: 0,
+          total_price: 10,
+          category: 'Binary Arithmetic'
+        },
+        {
+          description: 'Problem 7: 5 KB File Size Conversion (40,960 bits) & Power of 2 Inversion',
+          quantity: 1,
+          unit_price: 10,
+          tax_rate: 0,
+          total_price: 10,
+          category: 'Data Storage'
+        }
+      ],
+      domain_specific: {
+        student_name: 'Computer Systems Student',
+        student_id: 'STU-2026-CS889',
+        institution_name: 'Department of Computer Science & Engineering',
+        course_or_subject: 'Computer Science: Digital Logic & Number Systems',
+        grade_level: 'Undergraduate / Advanced Secondary CS',
+        assignment_title: 'Practice Set: Binary & Decimal Number Systems',
+        academic_term: 'Fall Term 2026',
+        submission_date: '2026-07-07',
+        score_or_grade: '100% (Verified Solutions)',
+        total_marks: 100,
+        instructor_name: 'Prof. Alan Turing / Digital Systems Faculty',
+        key_concepts: [
+          'Binary to Decimal Conversion',
+          'Place Values (Powers of 2: 2^0 to 2^12)',
+          'Successive Division by 2 Method',
+          '8-Bit Memory Addressing (256 Locations)',
+          'RGB 24-Bit Color Depth (16,777,216 Colors)',
+          'One\'s Complement Inversion (A + ~A = 2^n - 1)',
+          'Bitwise Constraint Solving',
+          'Digital Storage Units (KB to Bytes to Bits)'
+        ],
+        questions_count: 10,
+        problem_sets: [
+          {
+            number: 1,
+            question: 'Place value expansion and successive division-by-2 conversion of decimal 4096 into binary.',
+            topic: 'Decimal to Binary Conversion',
+            answer: 'Place values: 4000, 0, 90, 6. Decimal (4096)_10 converts to binary (1000000000000)_2 = 2^12 via 13 successive division steps.',
+            marks: 10
+          },
+          {
+            number: 2,
+            question: '8-bit memory addressing: (a) unique addressable locations, (b) highest address, (c) binary address of 200th location.',
+            topic: 'Computer Memory Addressing',
+            answer: '(a) 2^8 = 256 unique locations (0 to 255). (b) Highest address = 255 = (11111111)_2. (c) 200th location has zero-indexed address 199 = (11000111)_2.',
+            marks: 10
+          },
+          {
+            number: 3,
+            question: 'RGB color model: R=200, G=130, B=75. (a) Binary conversions, (b) total bits per pixel, (c) distinct color count.',
+            topic: 'Digital Media & RGB Color Models',
+            answer: '(a) R = (11001000)_2, G = (10000010)_2, B = (01001011)_2. (b) 8 + 8 + 8 = 24 bits/pixel. (c) 256 x 256 x 256 = 16,777,216 distinct colors.',
+            marks: 10
+          },
+          {
+            number: 4,
+            question: 'Binary A = 10100100. (a) Place values and decimal value, (b) flipped bits B in decimal, (c) evaluate A + B.',
+            topic: 'One\'s Complement & Bit Inversion',
+            answer: '(a) Positions 2, 5, 7 have 1s: 4 + 32 + 128 = 164. (b) B = 01011011_2 = 91. (c) A + B = 164 + 91 = 255 = 2^8 - 1 (fundamental property of one\'s complement).',
+            marks: 10
+          },
+          {
+            number: 5,
+            question: 'Mystery 8-bit binary number N: leftmost 4 bits sum=192, rightmost 4 bits sum=11, bit 4=0. Find N.',
+            topic: 'Constraint-Based Bit Layout',
+            answer: 'Leftmost (pos 7,6,5,4): 128+64=192 -> 1100. Rightmost (pos 3,2,1,0): 8+2+1=11 -> 1011. N = (11001011)_2 = (203)_10.',
+            marks: 10
+          },
+          {
+            number: 6,
+            question: 'Player scores A = 110111011 and B = 101100110: (a) decimal values, (b) difference A - B, (c) binary of difference.',
+            topic: 'Binary Arithmetic & Comparison',
+            answer: '(a) A = 443, B = 358. (b) Difference = 85. (c) 85 in binary = (1010101)_2. (d) Place values sum: 1 + 4 + 16 + 64 = 85.',
+            marks: 10
+          },
+          {
+            number: 7,
+            question: 'File size of 5 KB: (a) total number of bits, (b) 1024 in binary, (c) flipping any 1-bit to 0 resulting values.',
+            topic: 'Digital Storage & File Sizing',
+            answer: '(a) 5 x 1024 x 8 = 40,960 bits. (b) 1024 = (10000000000)_2. (c) Only 1 bit is set (bit 10); flipping it produces 0.',
+            marks: 10
+          }
+        ],
+        study_recommendations: [
+          'Practice successive division by 2 to quickly convert arbitrary decimal integers to binary without mistakes.',
+          'Remember that an n-bit register uniquely addresses 2^n memory states (e.g., 8-bit provides 256 locations from 0 to 255).',
+          'Utilize the property A + ~A = 2^n - 1 for rapid verification of one\'s complement inversions in digital logic.',
+          'RGB 24-bit True Color combines 8 bits per channel (Red, Green, Blue) to render up to 16,777,216 distinct color codes.'
+        ]
+      },
+      raw_summary: 'This is an academic Computer Science Student Practice Worksheet on Binary & Decimal Number Systems. It contains 10 comprehensive numerical and architectural exercises covering base-2 to base-10 conversion, place value powers of 2, 8-bit byte memory addressing (256 locations), RGB 24-bit color depth (16.7M colors), and one\'s complement bit inversion. All problem solutions are fully verified with step-by-step mathematical proofs.',
+      created_at: now
+    };
+
+    const anomalies: DocumentAnomaly[] = [
+      {
+        id: uuidv4(),
+        document_id: docId,
+        severity: 'INFO',
+        category: 'COMPLIANCE_RISK',
+        title: 'Verified Academic Solutions',
+        description: 'All 10 binary and decimal conversions, bitwise proofs, and memory calculations have been verified mathematically.',
+        suggested_action: 'Approved for student self-study, lab review, and graded assessment.',
+        resolved: true,
+        created_at: now
+      }
+    ];
+
+    await dbService.createDocument(document);
+    await dbService.saveExtraction(extraction);
+    await dbService.saveAnomalies(anomalies);
+    return { document, extraction, anomalies };
+  }
 
   if (type === 'medical_claim') {
     const document: IngestedDocument = {

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { DollarSign, Activity, FileText, Sparkles, Loader2 } from 'lucide-react';
+import { DollarSign, Activity, FileText, Sparkles, Loader2, GraduationCap } from 'lucide-react';
 import { apiLoadSample } from '../services/api.js';
 
 interface SampleDocsLoaderProps {
@@ -10,6 +10,15 @@ export const SampleDocsLoader: React.FC<SampleDocsLoaderProps> = ({ onSampleLoad
   const [loadingType, setLoadingType] = useState<string | null>(null);
 
   const samples = [
+    {
+      id: 'student_worksheet' as const,
+      title: 'Student Practice Set',
+      subtitle: 'Binary & Decimal Systems',
+      badge: 'Student & Academic',
+      color: 'from-indigo-500/20 to-violet-500/10 border-indigo-500/30 text-indigo-300',
+      icon: GraduationCap,
+      highlights: '10 problems, base conversion, 8-bit addressing, RGB color depth'
+    },
     {
       id: 'invoice' as const,
       title: 'Commercial Invoice',
@@ -39,7 +48,7 @@ export const SampleDocsLoader: React.FC<SampleDocsLoaderProps> = ({ onSampleLoad
     }
   ];
 
-  const handleLoad = async (type: 'invoice' | 'medical_claim' | 'contract') => {
+  const handleLoad = async (type: 'invoice' | 'medical_claim' | 'contract' | 'student_worksheet') => {
     try {
       setLoadingType(type);
       await apiLoadSample(type);
@@ -65,7 +74,7 @@ export const SampleDocsLoader: React.FC<SampleDocsLoaderProps> = ({ onSampleLoad
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
         {samples.map(sample => {
           const Icon = sample.icon;
           const isLoading = loadingType === sample.id;

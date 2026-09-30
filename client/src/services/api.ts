@@ -80,7 +80,7 @@ export const apiUploadDocument = async (
 };
 
 export const apiLoadSample = async (
-  sampleType: 'invoice' | 'medical_claim' | 'contract'
+  sampleType: 'invoice' | 'medical_claim' | 'contract' | 'student_worksheet'
 ): Promise<DocumentDetailResponse> => {
   const res = await fetch(`${API_BASE}/documents/load-sample`, {
     method: 'POST',

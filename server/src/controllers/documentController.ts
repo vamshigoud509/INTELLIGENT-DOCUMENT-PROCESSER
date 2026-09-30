@@ -154,7 +154,7 @@ export const getDocumentById = async (req: AuthenticatedRequest, res: Response):
 
 export const loadSample = async (req: AuthenticatedRequest, res: Response): Promise<void> => {
   try {
-    const { sampleType } = req.body as { sampleType?: 'invoice' | 'medical_claim' | 'contract' };
+    const { sampleType } = req.body as { sampleType?: 'invoice' | 'medical_claim' | 'contract' | 'student_worksheet' };
     const sample = await loadSampleDocument(sampleType || 'invoice', req.user?.id);
 
     res.status(201).json({

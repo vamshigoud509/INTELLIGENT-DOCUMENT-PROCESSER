@@ -27,7 +27,12 @@ export const DocumentChat: React.FC<DocumentChatProps> = ({
     scrollToBottom();
   }, [messages, loading]);
 
-  const quickPrompts = domain === 'HEALTHCARE' ? [
+  const quickPrompts = domain === 'STUDENT' ? [
+    'What are the key concepts and learning objectives?',
+    'Explain the solutions to the binary conversion problems.',
+    'What is the 8-bit memory addressing and RGB color depth breakdown?',
+    'Summarize all practice exercises in this worksheet.'
+  ] : domain === 'HEALTHCARE' ? [
     'What is the primary clinical diagnosis?',
     'What are the itemized hospital charges?',
     'Who is the attending physician and insurance payer?',

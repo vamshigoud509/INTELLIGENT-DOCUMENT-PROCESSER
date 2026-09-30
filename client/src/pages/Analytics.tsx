@@ -9,7 +9,8 @@ import {
   Zap, 
   CheckCircle2, 
   Activity,
-  Scale
+  Scale,
+  GraduationCap
 } from 'lucide-react';
 import { AnalyticsSummary } from '../types/index.js';
 import { apiGetAnalytics } from '../services/api.js';
@@ -42,9 +43,10 @@ export const Analytics: React.FC = () => {
     );
   }
 
-  const domains = data?.domainBreakdown || { FINANCIAL: 0, HEALTHCARE: 0, LEGAL: 0 };
+  const domains = data?.domainBreakdown || { STUDENT: 0, FINANCIAL: 0, HEALTHCARE: 0, LEGAL: 0 };
   const total = data?.totalDocuments || 1;
 
+  const studentPct = Math.round(((domains.STUDENT || 0) / total) * 100);
   const financialPct = Math.round(((domains.FINANCIAL || 0) / total) * 100);
   const healthcarePct = Math.round(((domains.HEALTHCARE || 0) / total) * 100);
   const legalPct = Math.round(((domains.LEGAL || 0) / total) * 100);
@@ -117,6 +119,22 @@ export const Analytics: React.FC = () => {
 
           <div className="space-y-4">
             
+            {/* Student & Academic */}
+            <div>
+              <div className="flex items-center justify-between text-xs font-semibold mb-1">
+                <span className="text-slate-300 flex items-center gap-1.5">
+                  <GraduationCap className="w-3.5 h-3.5 text-indigo-400" /> Student & Academic
+                </span>
+                <span className="text-slate-400">{domains.STUDENT || 0} docs ({studentPct}%)</span>
+              </div>
+              <div className="w-full bg-slate-800 rounded-full h-2 overflow-hidden">
+                <div 
+                  className="bg-indigo-500 h-2 rounded-full transition-all duration-500" 
+                  style={{ width: `${studentPct}%` }}
+                />
+              </div>
+            </div>
+
             {/* Financial */}
             <div>
               <div className="flex items-center justify-between text-xs font-semibold mb-1">

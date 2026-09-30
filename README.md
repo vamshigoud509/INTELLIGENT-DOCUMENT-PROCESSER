@@ -13,19 +13,23 @@
 ## 🌟 Key Capabilities & Innovations
 
 1. **Multi-Domain Document Ingestion & Classification**:
-   - Automated zero-shot classification across **Financial** (Invoices, Receipts, POs), **Healthcare** (Hospital UB-04 Claims, Clinical Summaries), and **Legal** (Enterprise SLAs, Master Agreements).
-   - Drag-and-drop file ingestion supporting PDFs, PNG, JPG, and scans up to 25MB via Multer.
-2. **Multimodal Zero-Shot Entity Extraction**:
+   - Automated zero-shot classification across **Student & Academic** (Coursework, Practice Sets, Exam Worksheets, Syllabi), **Financial** (Invoices, Receipts, POs), **Healthcare** (Hospital UB-04 Claims, Clinical Summaries), and **Legal** (Enterprise SLAs, Master Agreements).
+   - Drag-and-drop file ingestion supporting PDFs, PNG, JPG, and scans up to 25MB via Multer with instant domain pre-sets.
+2. **Category-Tailored Intelligence Summaries**:
+   - Live synthesizes and groups data according to its exact category (Student Coursework, Financial Invoices, Healthcare Claims, Legal Contracts, Identity Credentials).
+   - Category-structured breakdowns highlight subject concepts, problem sets, numerical proofs, financial reconciliation, clinical diagnoses, and legal liabilities.
+3. **Multimodal Zero-Shot Entity Extraction**:
    - Parses complex layouts directly into strongly-typed JSON structures: parties, addresses, tax IDs, dates, currency, and itemized line-items tables.
    - Extracts healthcare-specific entities: Patient MRN, Policy #, Attending Physician NPI, ICD-10 Diagnostic Codes, and CPT Procedure Codes.
-3. **Automated Audit & Anomaly Detection Engine**:
+   - Extracts academic & student entities: Course/Subject, Assignment Title, Institution, Student ID, Learning Objectives, Key Concepts, and step-by-step Problem Sets.
+4. **Automated Audit & Anomaly Detection Engine**:
    - **Mathematical Verification**: Automatically reconciles line-items sum ($\Sigma \text{items} = \text{Subtotal}$) and checks $\text{Subtotal} + \text{Tax} - \text{Discount} = \text{Total}$. Detects discrepancies down to the cent.
-   - **Compliance & Risk Rules**: Detects overdue payment terms, missing tax IDs, and clinical prior-authorization flags.
-4. **Interactive Side-by-Side Verification Studio**:
-   - Split-screen layout: High-fidelity document viewer (zoom, rotate, preview) alongside parsed data tabs.
-5. **Conversational Document AI (Interactive Q&A)**:
-   - Natural language Q&A grounded strictly in the document content with citations.
-6. **Universal Machine-Readable Export**:
+   - **Compliance & Risk Rules**: Detects overdue payment terms, missing student IDs, missing tax IDs, and clinical prior-authorization flags.
+5. **Interactive Side-by-Side Verification Studio**:
+   - Split-screen layout: High-fidelity document viewer (zoom, rotate, preview) alongside parsed data tabs and dedicated Academic/Clinical cards.
+6. **Conversational Document AI (Interactive Q&A)**:
+   - Natural language Q&A grounded strictly in the document content with citations, including educational questions on binary conversions and problem sets.
+7. **Universal Machine-Readable Export**:
    - One-click export to clean **JSON** and accounting-ready **CSV**.
 
 ---
